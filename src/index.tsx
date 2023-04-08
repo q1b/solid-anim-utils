@@ -1,4 +1,4 @@
-import { Component, createSignal, createUniqueId } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { getProgress, makeFrameHandler } from "@/core";
 import { roundTo } from "./utils";
 
@@ -6,9 +6,7 @@ type Option = {
   immediate?: boolean;
 };
 
-export const createRaf = (fn: FrameRequestCallback, options: Option = {}) => {
-  const [isReverse, setReversed] = createSignal(false);
-
+export const createRafEffect = (fn: FrameRequestCallback, options: Option = {}) => {
   const [isRunning, setIsRunning] = createSignal(false);
 
   const frame = makeFrameHandler();
@@ -55,10 +53,9 @@ const Controls = () => {
   const [val, setVal] = createSignal(0);
   const [c, setC] = createSignal(0);
 
-  const { start, resume, restart, pause, isRunning } = createRaf(
+  const { start, resume, restart, pause, isRunning } = createRafEffect(
     (time) => {
       setC(c() + 1);
-      console.log(20000 - time);
       setVal(roundTo(getProgress(time, 20000), 2));
     },
     { immediate: false },
@@ -68,6 +65,7 @@ const Controls = () => {
     <>
       <div>{val()}</div>
       <div>{c()}</div>
+      {isRunning() ? "RUNNING" : "NOT RUNNING"}
       <button onClick={start}>Start</button>
       <button onClick={restart}>restart</button>
       <button onClick={resume}>resume</button>
@@ -79,7 +77,6 @@ const Controls = () => {
 export const Hello: Component<{ to?: string }> = (props) => {
   return (
     <>
-      <Controls />
       <Controls />
     </>
   );

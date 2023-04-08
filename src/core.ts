@@ -54,7 +54,7 @@ function makeFrameHandler() {
             running = true;
             const loop: FrameRequestCallback = (now) => {
                 afterFrame = false
-                currentTime = now - startAt - escapeTime;
+                currentTime = now - startAt - escapeTime
                 // console.log(roundTo(currentTime, 2), roundTo(escapeTime, 2), roundTo(stopAt, 2), roundTo(now, 2))
                 fn(now);
                 if (shouldStop) {
